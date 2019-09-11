@@ -1,3 +1,19 @@
+<#
+    .Examples
+    ### To use a single CSV file with Key Value Pairs ###
+    Import-Module .\Set-DeviceVariables.ps1
+    set-devicevariables -computer $(Import-CSV C:\Temp\complist.csv -header Key,Value).Key -CSVFilePath C:\Temp\complist.csv
+    
+    ### To use against a list of devices and apply a single variable set ###
+    Import-Module .\Set-DeviceVariables.ps1
+    set-devicevariables -computer $(Import-CSV C:\Temp\complist.csv -header ComputerName).ComputerName -Key "VariableKeyName" -Value "VariableValue"
+    
+    ### To use against a list of devices pulled from a collection or pipeline ###
+    Import-Module .\Set-DeviceVariables.ps1
+    set-devicevariables -computer (Get-CMDevice -CollectionName "Testing on Dave").Name -key 'test' -value 'value1'
+    
+    (Get-CMDevice -CollectionName "Testing on Dave").Name | Foreach-Object { set-devicevariables -computer $_ -key 'test' -value 'value1'
+#>
 function set-devicevariables {
     [CmdletBinding()]
     param (
